@@ -1,84 +1,165 @@
 <!DOCTYPE html>
-<!--
-
-
-
-
-
-
-Created by LAX1DUDE (do NOT contact)
-Ported to Khan Academy by ayunami2000#5250
-w/ help from Melvin4life#4876
-
-
-
-
-
-
-
-
-
-
-
-
--->
-<html>
+<html lang="en">
 <head>
-<title>Eaglercraft Singleplayer Test</title>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/eag-web-sp@1.0.4/classes1_mod.js"></script>
-<style type="text/css">
-a.nolink, a.nolink:link, a.nolink:hover, a.nolink:visited {
-	color: white;
-}
-a.nolink:active {
-	color: yellow;
-}
-#available {
-	position: fixed;
-	background-color: #333333;
-	top: 0px;
-	right: 0px;
-	padding: 10px 30px;
-	width:min(80vw,250px);
-	color:white;
-}
-#available_hide {
-	position: fixed;
-	top: 0px;
-	right: 0px;
-	margin: 10px;
-	padding: 2px;
-	font-weight: bold;
-	border: 1px solid white;
-	font-size: 12px;
-	line-height: 12px;
-	cursor: pointer;
-	background-color: #333333;
-}
-</style>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/eag-web-sp@1.0.4/assets_uri.js"></script>
-
-<script type="text/javascript">
-function base64ToUint8Array(base64) {
-    eval("function KAInfiniteLoopProtect(){}");
-    var binary_string = window.atob(base64);
-    var len = binary_string.length;
-    var bytes = new Uint8Array(len);
-    for (var i = 0; i < len; i++) {
-        bytes[i] = binary_string.charCodeAt(i);
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#101813" />
+  <title>Eglercraft — Block. Build. Explore.</title>
+  <script src="https://cdn.jsdelivr.net/npm/eag-web-sp@1.0.4/classes1_mod.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/eag-web-sp@1.0.4/assets_uri.js"></script>
+  <style>
+    :root {
+      color-scheme: dark;
+      --ink: #f4f1df;
+      --muted: #b7c1ad;
+      --green: #83c653;
+      --green-dark: #4a8734;
+      --panel: rgba(15, 25, 19, .9);
+      --line: rgba(226, 242, 207, .18);
     }
-    return bytes;
-}
-window.assetsData=base64ToUint8Array(window.assetsUri.slice(28));
-window.addEventListener("load", function(){
-window.minecraftOpts = [
-	"game_frame","",
-];
-main();
-});
-</script>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      font-family: system-ui, -apple-system, Segoe UI, sans-serif;
+      background: #18251c;
+    }
+    button, input { font: inherit; }
+    .scene {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 32px 18px;
+      background:
+        linear-gradient(180deg, rgba(10,18,14,.18), rgba(8,15,12,.78)),
+        radial-gradient(ellipse at 50% 30%, rgba(111,157,83,.4), transparent 48%),
+        linear-gradient(135deg, #263d2b 0%, #17271f 55%, #101813 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    .scene::before, .scene::after {
+      content: "";
+      position: absolute;
+      inset: auto -5% -100px;
+      height: 38vh;
+      background: repeating-linear-gradient(90deg, transparent 0 70px, rgba(3,10,7,.2) 70px 74px),
+                  linear-gradient(#354f32, #1d3022);
+      transform: perspective(350px) rotateX(10deg);
+      opacity: .8;
+      pointer-events: none;
+    }
+    .scene::after { inset: auto -5% -155px; height: 30vh; background: #17251b; opacity: .85; }
+    .card {
+      position: relative;
+      z-index: 1;
+      width: min(100%, 560px);
+      padding: clamp(26px, 6vw, 48px);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: var(--panel);
+      box-shadow: 0 24px 80px #050a0780, inset 0 1px #ffffff12;
+      backdrop-filter: blur(12px);
+    }
+    .eyebrow { color: var(--green); font-size: .76rem; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; }
+    h1 { margin: 10px 0 8px; font-size: clamp(2.4rem, 9vw, 4.3rem); line-height: .98; letter-spacing: -.06em; }
+    .tagline { color: var(--muted); margin: 0 0 28px; line-height: 1.6; }
+    .actions { display: grid; gap: 12px; }
+    .button {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      min-height: 54px; padding: 13px 18px; border: 1px solid transparent;
+      border-radius: 11px; color: #10200d; background: var(--green);
+      font-weight: 800; text-decoration: none; cursor: pointer;
+      transition: transform .16s ease, filter .16s ease, background .16s ease;
+    }
+    .button:hover { filter: brightness(1.08); transform: translateY(-2px); }
+    .button:focus-visible, input:focus-visible { outline: 3px solid #d5f79a; outline-offset: 3px; }
+    .button.secondary { color: var(--ink); background: #ffffff0b; border-color: var(--line); }
+    .button.secondary:hover { background: #ffffff15; }
+    .note { margin: 20px 0 0; color: #aab6a7; font-size: .84rem; line-height: 1.55; }
+    .multiplayer { display: none; margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--line); }
+    .multiplayer.visible { display: block; }
+    .multiplayer h2 { margin: 0 0 8px; font-size: 1.2rem; }
+    .multiplayer p { color: var(--muted); font-size: .9rem; line-height: 1.55; }
+    .field-label { display: block; margin: 16px 0 7px; color: var(--ink); font-size: .86rem; font-weight: 700; }
+    input {
+      width: 100%; min-height: 48px; padding: 0 13px; color: var(--ink);
+      border: 1px solid var(--line); border-radius: 9px; background: #080e0b;
+    }
+    .multiplayer .button { margin-top: 12px; width: 100%; }
+    .status { min-height: 1.4em; margin: 10px 0 0 !important; color: #d7edbd !important; font-size: .82rem !important; }
+    #game { display: none; position: fixed; inset: 0; z-index: 5; background: #000; }
+    #game.active { display: block; }
+    .back { position: fixed; z-index: 6; top: 12px; left: 12px; padding: 9px 13px; border: 1px solid #ffffff44; border-radius: 8px; color: white; background: #101813dd; cursor: pointer; }
+    @media (max-width: 480px) { .card { padding: 28px 22px; } }
+  </style>
+  <script>
+    function base64ToUint8Array(base64) {
+      var binary = window.atob(base64);
+      var bytes = new Uint8Array(binary.length);
+      for (var i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+      return bytes;
+    }
+    window.assetsData = base64ToUint8Array(window.assetsUri.slice(28));
+    window.minecraftOpts = ["game_frame", ""];
+    var gameStarted = false;
+    function startSingleplayer() {
+      document.getElementById("landing").style.display = "none";
+      document.getElementById("game").classList.add("active");
+      if (!gameStarted) {
+        gameStarted = true;
+        if (typeof window.main === "function") window.main();
+        else document.getElementById("status").textContent = "The game client did not load. Check your connection and refresh.";
+      }
+    }
+    function openMultiplayer() {
+      var address = document.getElementById("server-address").value.trim();
+      var status = document.getElementById("multiplayer-status");
+      if (address && !/^wss?:\/\//i.test(address)) {
+        status.textContent = "Server addresses must start with ws:// or wss://.";
+        return;
+      }
+      var opened = window.open("https://eaglercraft.com/play", "_blank", "noopener,noreferrer");
+      if (!opened) {
+        status.textContent = "Your browser blocked the new tab. Allow pop-ups, then try again.";
+        return;
+      }
+      if (address && navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(address).then(function () {
+          status.textContent = "Multiplayer client opened. Your server address was copied—paste it into Multiplayer → Direct Connect.";
+        }).catch(function () {
+          status.textContent = "Multiplayer client opened. Copy the address above, then paste it into Multiplayer → Direct Connect.";
+        });
+      } else {
+        status.textContent = "Multiplayer client opened. Choose Multiplayer → Direct Connect and enter your server's WebSocket address.";
+      }
+    }
+  </script>
 </head>
-<body style="margin:0px;width:100vw;height:100vh;" id="game_frame"></body>
+<body>
+  <main class="scene" id="landing">
+    <section class="card" aria-labelledby="title">
+      <div class="eyebrow">A blocky world awaits</div>
+      <h1 id="title">Eglercraft</h1>
+      <p class="tagline">Build something brilliant, explore somewhere new, and make the world your own.</p>
+      <div class="actions">
+        <button class="button" type="button" onclick="startSingleplayer()">▶ &nbsp; Play singleplayer</button>
+        <button class="button secondary" type="button" aria-expanded="false" aria-controls="multiplayer-panel" onclick="var p=document.getElementById('multiplayer-panel');p.classList.toggle('visible');this.setAttribute('aria-expanded',p.classList.contains('visible'));">◎ &nbsp; Multiplayer</button>
+      </div>
+      <p class="note">Singleplayer runs right here in your browser. Multiplayer needs an Eaglercraft-compatible server.</p>
+      <section class="multiplayer" id="multiplayer-panel" aria-labelledby="multi-title">
+        <h2 id="multi-title">Join a multiplayer server</h2>
+        <p>This embedded build is singleplayer-only. Open the multiplayer-enabled Eaglercraft client, then choose <strong>Multiplayer → Direct Connect</strong>. Use a server address supplied by its owner (it must support Eaglercraft WebSocket connections).</p>
+        <label class="field-label" for="server-address">Server address (optional)</label>
+        <input id="server-address" type="text" inputmode="url" autocomplete="url" placeholder="wss://your-eaglercraft-server.example" />
+        <button class="button" type="button" onclick="openMultiplayer()">Open multiplayer client ↗</button>
+        <p class="status" id="multiplayer-status" role="status" aria-live="polite"></p>
+      </section>
+    </section>
+  </main>
+  <div id="game" aria-label="Eglercraft game">
+    <button class="back" type="button" onclick="document.getElementById('game').classList.remove('active');document.getElementById('landing').style.display='grid';">← Back to menu</button>
+    <div id="game_frame" style="width:100%;height:100%;"></div>
+  </div>
+</body>
 </html>
